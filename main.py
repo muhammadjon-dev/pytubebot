@@ -15,7 +15,7 @@ user_selection = {}
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("Video"), types.KeyboardButton("Channel"), types.KeyboardButton("Playlist"))
+    markup.add(types.KeyboardButton("Video"), types.KeyboardButton("Playlist"))
     bot.reply_to(message, "Welcome to our bot! Please select one:", reply_markup=markup)
 
 @bot.message_handler(func=lambda message: message.text in ["Video", "Channel", "Playlist"])
