@@ -48,7 +48,14 @@ def is_valid_url(url):
     return re.match(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url)
 
 def is_valid_playlist_url(url):
-    return re.match(r'https?://(www\.)?youtube\.com/playlist\?list=[a-zA-Z0-9_-]+', url)
+    match = re.match(r'https?://(www\.)?youtube\.com/playlist\?list=[a-zA-Z0-9_-]+', url)
+    print(f"Playlist URL validation result for '{url}': {match}")
+    return match
+
+def is_valid_video_url(url):
+    match = re.match(r'https?://(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]+', url)
+    print(f"Video URL validation result for '{url}': {match}")
+    return match
 
 def process_url(message, selected_type, url):
     api_url = "http://www.pytube.live/getimage"
@@ -78,10 +85,16 @@ def handle_url(message):
     if url == "⏮ Back":
         del user_selection[user_id]
         handle_back(message)
-    elif selected_type == "📂 Playlist" and is_valid_playlist_url(url):
-        process_url(message, selected_type, url)
-    elif is_valid_url(url):
-        process_url(message, selected_type, url)
+    elif selected_type == "📂 Playlist":
+        if is_valid_playlist_url(url):
+            process_url(message, selected_type, url)
+        else:
+            bot.send_message(message.chat.id, "Invalid playlist URL. Please send a valid YouTube playlist URL.")
+    elif selected_type == "📹 Video":
+        if is_valid_video_url(url):
+            process_url(message, selected_type, url)
+        else:
+            bot.send_message(message.chat.id, "Invalid video URL. Please send a valid YouTube video URL.")
     else:
         bot.send_message(message.chat.id, "Invalid URL.")
 
