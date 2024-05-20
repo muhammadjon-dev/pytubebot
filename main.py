@@ -68,11 +68,11 @@ def process_url(message, selected_type, url):
         if response.status_code == 200:
             response_data = response.json()
             if "image" in response_data:
-                bot.send_photo(message.chat.id, photo=response_data["image"])
+                bot.send_photo(message.chat.id, photo=response_data["image"], caption="@ytubepy_bot")
             else:
                 bot.send_message(message.chat.id, "The API did not return an image.")
         else:
-            bot.send_message(message.chat.id, f"Error sending request to API: {response.status_code}")
+            bot.send_message(message.chat.id, f"Error sending request to API: {response["error"]}")
     except requests.exceptions.RequestException as e:
         bot.send_message(message.chat.id, f"Request failed: {str(e)}")
 
