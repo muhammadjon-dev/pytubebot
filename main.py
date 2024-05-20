@@ -72,6 +72,7 @@ def process_url(message, selected_type, url):
             else:
                 bot.send_message(message.chat.id, "The API did not return an image.")
         else:
+            error_msg = response["error"]
             bot.send_message(message.chat.id, f"Error sending request to API: {response["error"]}")
     except requests.exceptions.RequestException as e:
         bot.send_message(message.chat.id, f"Request failed: {str(e)}")
